@@ -1,0 +1,30 @@
+TSM.Model model = new TSM.Model();
+if (model.GetConnectionStatus())
+{
+                try
+                {
+                    ModelObjectEnumerator selectedObjects = new TSM.UI.ModelObjectSelector().GetSelectedObjects();
+                    if (selectedObjects.GetSize() > 0)
+                    {
+                        while (selectedObjects.MoveNext())
+                        {
+                            if (selectedObjects.Current is TSM.Part part)
+                            {
+                                Phase phase = new Phase();
+                                phase.PhaseNumber = 110;
+                                part.GetAssembly().SetPhase(phase);
+                                part.GetAssembly().Modify();
+                                phase.PhaseNumber = 500;
+                                part.SetPhase(phase);
+                                part.Modify();
+                            }
+                        }
+                    }
+                }
+                catch (Exception ee)
+                {
+                    throw ee;
+                }
+
+                model.CommitChanges();
+            }                        
